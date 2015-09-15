@@ -11,6 +11,7 @@ else:
 	except:
 		from TeXcount import getTeXRoot
 from os.path import dirname
+from platform import system
 
 class TexcountCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
@@ -35,11 +36,15 @@ class TexcountCommand(sublime_plugin.TextCommand):
 		filename = filename.replace(" ","\ ")
 		cmd = "texcount -merge " + filename
 
-		# MacTex fix
-		cmd = "PATH=$PATH:/usr/texbin; " + cmd
+		
+		if system() == 'Windows':
+			pass
+		else:
+			# MacTex fix
+			cmd = "PATH=$PATH:/usr/texbin; " + cmd
 
 		# Test to see if texcount is installed and in available PATH
-		testcmdprocess = Popen("PATH=$PATH:/usr/texbin; which texcount", shell=True, stdout=PIPE, stderr=PIPE)
+		testcmdprocess = Popen("texcount", shell=True, stdout=PIPE, stderr=PIPE)
 		testout, testerr = testcmdprocess.communicate()
 		if (testout == ""):
 			sublime.error_message("TeXcount not installed in PATH \nDownload from: http://app.uio.no/ifi/texcount/")
