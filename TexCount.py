@@ -10,6 +10,7 @@ else:
 		from LaTeXTools import getTeXRoot
 	except:
 		from TeXcount import getTeXRoot
+from os.path import dirname
 
 class TexcountCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
@@ -19,6 +20,9 @@ class TexcountCommand(sublime_plugin.TextCommand):
 		if filename == None:
 			sublime.error_message("No file in focus")
 			return
+
+		# Get the directory for the root tex file to use as the cwd
+		dir = dirname(filename)
 
 		# Save if file has been edited since last save
 		if (self.view.is_dirty()):
@@ -42,7 +46,7 @@ class TexcountCommand(sublime_plugin.TextCommand):
 			return
 
 		# Excecute texcount and collect output
-		p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE)
+		p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE, cwd=dir)
 		out, err = p.communicate()
 
 		# Display output
