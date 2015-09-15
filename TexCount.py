@@ -51,7 +51,7 @@ class TexcountCommand(sublime_plugin.TextCommand):
 			return
 
 		# Excecute texcount and collect output
-		p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE, cwd=dir)
+		p = Popen(cmd, shell=True, stdout=PIPE, stderr=PIPE, cwd=dir, universal_newlines=True)
 		out, err = p.communicate()
 
 		# Display output
@@ -60,7 +60,7 @@ class TexcountCommand(sublime_plugin.TextCommand):
 			outputpanel = self.view.window().create_output_panel("texcountoutput")
 			outputpanel.set_read_only(False)
 			outputpanel.run_command('erase_view')
-			outputpanel.run_command('append', {'characters': out.decode()})
+			outputpanel.run_command('append', {'characters': out})
 			outputpanel.set_read_only(True)
 			sublime.active_window().run_command("show_panel", {"panel": "output.texcountoutput"})
 		else:
