@@ -1,0 +1,12 @@
+/*
+TexCount Package keymap for Windows
+*/
+[
+  // Shortcut designed to fit with LaTeXTools Package
+
+  // Key shortcut is
+  {
+    "keys": ["ctrl+l", "w"],
+    "command": "texcount"
+  }
+]
